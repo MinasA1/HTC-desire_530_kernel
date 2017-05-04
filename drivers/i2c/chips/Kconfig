@@ -1,0 +1,18 @@
+#
+# Miscellaneous I2C chip drivers configuration
+#
+# *** DEPRECATED! Do not add new entries! See Makefile ***
+#
+
+
+config SENSORS_NFC_PN544
+        tristate "PN544 NFC sensor support"
+        depends on I2C=y
+        help
+          PN544 NFC Driver implemented.
+
+config SENSORS_NFC_PN548
+        tristate "PN548 NFC sensor support"
+        depends on I2C=y
+        help
+          PN548 NFC Driver implemented.

@@ -1,0 +1,26 @@
+/* Copyright (c) 2014, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/dts-v1/;
+
+#include "msm8909-htc_a16.dtsi"
+#include "msm8909-pm8909.dtsi"
+#include "msm8909-pm8909-htc_a16.dtsi"
+#include "msm8909-camera-sensor-A16.dtsi"
+/ {
+	model = "HTC Corporation. MSM8909-PM8909 A16";
+	compatible = "htc,msm8909-a16";
+
+	/* #UL:407, #WL:408, #WHL:410, #UL_America:424 */
+	qcom,msm-id = <407 0>, <408 0>, <410 0>, <424 0>;
+	qcom,board-id = <0 0>;
+};

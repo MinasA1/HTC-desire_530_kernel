@@ -1,0 +1,14 @@
+#
+# STMicroelectronics sensors common library
+#
+
+config IIO_ST_SENSORS_I2C_HTC
+	tristate
+
+config IIO_ST_SENSORS_SPI_HTC
+	tristate
+
+config IIO_ST_SENSORS_CORE_HTC
+	tristate
+	select IIO_ST_SENSORS_I2C_HTC if I2C
+	select IIO_ST_SENSORS_SPI_HTC if SPI_MASTER

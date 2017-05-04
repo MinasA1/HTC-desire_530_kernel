@@ -1,0 +1,119 @@
+/*
+ * msm8909-htc-common: common configs of HTC msm8909 projects
+ */
+#include "skeleton64.dtsi"
+
+/ {
+	aliases {
+		/* smdtty devices */
+		smd20 = &smdtty_data20;
+	};
+
+	memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		ramoops_mem: ramoops_region@0 {
+			linux,reserve-contiguous-region;
+			linux,reserve-region;
+			linux,remove-completely;
+			reg = <0 0x8E000000 0 0x00100000>; /* 1 MB */
+			label = "ramoops_mem";
+		};
+
+		htc_reserve_region: htc_reserve_region@0 {
+			linux,reserve-contiguous-region;
+			linux,reserve-region;
+			linux,remove-completely;
+			reg = <0 0x8E100000 0 0x00900000>; /* 9 MB */
+			label = "htc_reserve";
+
+			#address-cells = <2>;
+			#size-cells = <2>;
+			htc_mnemosyne_mem: htc_mnemosyne_mem@0 {
+				reg = <0x0 0x8E3E1000 0x0 0x1000>;
+			};
+		};
+
+		htc_reserve_appsbl: htc_reserve_appsbl@0 {
+			linux,reserve-contiguous-region;
+			linux,reserve-region;
+			linux,remove-completely;
+			reg = <0 0x8EA00000 0 0x00200000>; /* 2 MB */
+			label = "htc_reserve_appsbl";
+		};
+
+		htc_ramoops@0 {
+			compatible = "htc,ramoops";
+			linux,contiguous-region = <&ramoops_mem>;
+			record-size = <0x00000000>;
+			console-size = <0x00100000>; /* 1 MB */
+			ftrace-size = <0x00000000>;
+		};
+
+		htc_mnemosyne@0 {
+			compatible = "htc,mnemosyne";
+			linux,contiguous-region = <&htc_mnemosyne_mem>;
+		};
+
+		htc_smlog_mem: htc_smlog_region@0 {
+			linux,reserve-contiguous-region;
+			reg = <0 0x86800000 0 0x01000000>; /* 16 MB */
+			label = "htc_smlog_mem";
+		};
+	};
+
+	soc: soc { };
+};
+
+&soc {
+	#address-cells = <1>;
+	#size-cells = <1>;
+	ranges = <0 0 0 0xffffffff>;
+	compatible = "simple-bus";
+
+	htc_pnpmgr{
+		htc,cluster-map = <0x0F>;
+		htc,perf_table = <800000>, <998400>, <1190400>, <1305600>, <1305600>;
+	};
+
+	qcom,msm-imem@8600000 {
+		compatible = "qcom,msm-imem";
+		reg = <0x08600000 0x1000>; /* Address and size of IMEM */
+		ranges = <0x0 0x08600000 0x1000>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		download_mode@0 {
+			compatible = "qcom,msm-imem-download_mode";
+			reg = <0x0 8>;
+		};
+
+		restart_info@a94 {
+			compatible = "htc,msm-imem-restart_info";
+			reg = <0xa94 100>;
+			info_size = <100>;
+		};
+
+		emergency_download_mode@fe0 {
+			compatible = "qcom,msm-imem-emergency_download_mode";
+			reg = <0xfe0 12>;
+		};
+	};
+
+	htc_radio_smem {
+		compatible = "htc,htc_radio_smem";
+		reg = <0x8E3F0000 0x10000>;
+		linux,contiguous-region = <&htc_smlog_mem>;
+		reg-names = "smem-start-addr";
+	};
+
+	qcom,smdtty {
+		compatible = "qcom,smdtty";
+
+		smdtty_data20: qcom,smdtty-data20 {
+			qcom,smdtty-remote = "modem";
+			qcom,smdtty-port-name = "DATA20";
+		};
+	};
+};

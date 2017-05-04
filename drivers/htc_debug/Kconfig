@@ -1,0 +1,1 @@
+source "drivers/htc_debug/mnemosyne/Kconfig"

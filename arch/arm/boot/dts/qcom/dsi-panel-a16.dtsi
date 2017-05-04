@@ -1,0 +1,545 @@
+&mdss_dsi0 {
+	pinctrl-names = "mdss_default", "mdss_sleep";
+	pinctrl-0 = <&mdss_dsi_active>;
+	pinctrl-1 = <&mdss_dsi_suspend>;
+
+	/* L2: MIPI power 1.2V
+	   L6: MIPI DSI PLL power 1.8V
+	   Above power are enabled when PM8909 is ON */
+	qcom,regulator-ldo-mode;
+	qcom,platform-regulator-settings = [02 09 03 00 20 00 01];
+
+	qcom,platform-reset-gpio = <&msm_gpio 25 0>;
+	htc,lcm_1v8_en-gpio = <&msm_gpio 32 0>;
+	htc,lcm_p5v-gpio = <&msm_gpio 51 0>;
+	htc,lcm_n5v-gpio = <&msm_gpio 52 0>;
+	htc,lcm_bl_en-gpio = <&msm_gpio 110 0>;
+};
+
+&mdss_mdp {
+	a16_truly_hx8394f_720p_vid:qcom,mdss_dsi_a16_truly_hx8394f_720p_video {
+		compatible = "qcom,mdss-dsi-panel";
+		status = "disable";
+		qcom,cont-splash-enabled;
+		qcom,mdss-dsi-panel-name = "a16 truly hx8394f 720p video mode dsi panel";
+		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+		qcom,mdss-dsi-panel-destination = "display_1";
+		qcom,mdss-dsi-panel-framerate = <53>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <720>;
+		qcom,mdss-dsi-panel-height = <1280>;
+		/* the same porch setting as Tianma panel */
+		qcom,mdss-dsi-h-front-porch = <100>;
+		qcom,mdss-dsi-h-back-porch = <78>;
+		qcom,mdss-dsi-h-pulse-width = <96>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <16>;
+		qcom,mdss-dsi-v-front-porch = <9>;
+		qcom,mdss-dsi-v-pulse-width = <2>;
+		qcom,mdss-dsi-h-left-border = <0>;
+		qcom,mdss-dsi-h-right-border = <0>;
+		qcom,mdss-dsi-v-top-border = <0>;
+		qcom,mdss-dsi-v-bottom-border = <0>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-color-order = "rgb_swap_rgb";
+		qcom,mdss-dsi-underflow-color = <0>;
+		qcom,mdss-dsi-border-color = <0>;
+		qcom,mdss-dsi-on-command = [
+			39 01 00 00 00 00 04 B9 FF 83 94 /* Set EXTC */
+			39 01 00 00 00 00 07 BA 62 03 68 6B B2 C0 /* Set MIPI */
+			39 01 00 00 00 00 0B B1 50 12 72 09 31 54 71 31 50 34 /* Set Power */
+			39 01 00 00 00 00 07 B2 00 80 64 06 08 2F /* Set Display */
+			39 01 00 00 00 00 16 B4 74 76 0D 5C 5A 5B 01 05 7E 35 00 3F 74 76 0D 5C 5A 5B 01 05 7E /* Set CYC */
+			39 01 00 00 00 00 3B E0 00 05 10 17 19 1D 21 20 43 55 69 6B 78 8C 96 9C AB AF AB BA C8 63 61 66 6C 6F 74 7F 7F 00 05 0F 16 19 1D 21 20 43 55 69 6B 78 8C 96 9C AB AF AB BA C8 63 61 66 6C 6F 74 7F 7F /* Set Gamma */
+			39 01 00 00 00 00 22 D3 00 00 06 06 40 07 0A 0A 32 10 01 00 01 52 15 07 05 07 32 10 00 00 00 67 44 05 05 37 0E 0E 27 06 40 /* Set D3 */
+			39 01 00 00 00 00 2D D5 20 21 00 01 02 03 04 05 06 07 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 19 19 18 18 24 25 /* Set GIP */
+			39 01 00 00 00 00 2D D6 24 25 07 06 05 04 03 02 01 00 18 18 18 18 18 18 18 18 58 58 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 19 19 20 21 /* Set D6 */
+			39 01 00 00 00 00 02 CC 0B /* Set Panel */
+			39 01 00 00 00 00 03 C0 1F 73 /* Set C0 */
+			39 01 00 00 00 00 02 D4 02 /* Set D4 */
+			39 01 00 00 00 00 02 BD 01 /* Set BD */
+			39 01 00 00 00 00 02 B1 60 /* Set GAS */
+			39 01 00 00 00 00 02 BD 00 /* Set BD */
+			15 01 00 00 00 00 02 51 FF /* Set display brightness */
+			15 01 00 00 00 00 02 53 2C /* Set CTRL display PWM out */
+			39 01 00 00 00 00 08 C9 13 00 14 1E B1 1E 00 /* Set CABC control: PWM=20kHz */
+			15 01 00 00 05 00 02 55 01 /* Set CABC mode: user interface image */
+			15 01 00 00 00 00 02 5E 11 /* Set CABC minimum brightness */
+			39 01 00 00 00 00 0A CA 2D 26 25 22 21 21 20 20 20 /* SET CABC GAIN: still mode (50~100%) */
+			39 01 00 00 0A 00 03 E4 00 D3 /* SET CE MODE */
+			39 01 00 00 00 00 2C E5 00 08 0E 0A 09 00 20 20 20 10 00 00 00 00 00 00 80 0A 20 08 09 0A 0E 0B 0B 0A 0A 09 08 05 03 00 00 00 00 00 00 00 00 00 00 00 00 /* SET CE */
+			39 01 00 00 05 00 12 E6 00 00 00 05 05 1C 18 1C 20 20 20 16 12 16 1C 20 20 /* SET CE SEL */
+			15 01 00 00 78 00 02 11 00 /* Sleep Out */
+			05 01 00 00 0A 00 02 29 00 /* Display On */
+		];
+		qcom,mdss-dsi-off-command = [
+			05 01 00 00 0A 00 02 28 00 /* Display Off */
+			05 01 00 00 28 00 02 10 00 /* Sleep In */
+		];
+		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
+		qcom,mdss-dsi-off-command-state = "dsi_hs_mode";
+		qcom,mdss-dsi-h-sync-pulse = <0>;
+		qcom,mdss-dsi-traffic-mode = "non_burst_sync_event";
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-lane-map = "lane_map_0123";
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		/* the same timing setting as Tianma panel */
+		qcom,mdss-dsi-panel-timings = [38 2F 25 00 43 3D 2A 31 3C 03 04 00];
+		qcom,mdss-dsi-t-clk-post = <0x1F>;
+		qcom,mdss-dsi-t-clk-pre = <0x39>;
+		qcom,mdss-dsi-bl-min-level = <30>;
+		qcom,mdss-dsi-bl-max-level = <255>;
+		qcom,mdss-dsi-dma-trigger = "trigger_sw";
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_i2c";
+		qcom,mdss-dsi-default-command-state = "dsi_hs_mode";
+		htc,cabc-off-cmds = [15 01 00 00 05 00 02 55 00];
+		htc,cabc-ui-cmds = [
+			15 01 00 00 05 00 02 55 01
+			39 01 00 00 00 00 08 C9 13 00 14 1E B1 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 2D 26 25 22 21 21 20 20 20
+		];
+		htc,cabc-video-cmds = [
+			15 01 00 00 05 00 02 55 03
+			39 01 00 00 00 00 08 C9 13 00 14 1E B1 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 40 2E 2A 23 22 21 20 20 20
+		];
+		htc,dimming-on-cmds = [15 01 00 00 00 00 02 53 2C];
+		qcom,mdss-pan-physical-width-dimension = <62>;
+		qcom,mdss-pan-physical-height-dimension = <110>;
+		qcom,mdss-shrink-pwm = <8 97 255>;
+		qcom,mdss-dsi-lp11-init;
+		htc,mdss-camera-blk = <200>;
+		htc,panel-id = <1>;
+	};
+
+	a16_success_hx8394f_720p_vid:qcom,mdss_dsi_a16_success_hx8394f_720p_video {
+		compatible = "qcom,mdss-dsi-panel";
+		status = "disable";
+		qcom,cont-splash-enabled;
+		qcom,mdss-dsi-panel-name = "a16 success hx8394f 720p video mode dsi panel";
+		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+		qcom,mdss-dsi-panel-destination = "display_1";
+		qcom,mdss-dsi-panel-framerate = <53>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <720>;
+		qcom,mdss-dsi-panel-height = <1280>;
+		/* the same porch setting as Tianma panel */
+		qcom,mdss-dsi-h-front-porch = <100>;
+		qcom,mdss-dsi-h-back-porch = <78>;
+		qcom,mdss-dsi-h-pulse-width = <96>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <16>;
+		qcom,mdss-dsi-v-front-porch = <9>;
+		qcom,mdss-dsi-v-pulse-width = <2>;
+		qcom,mdss-dsi-h-left-border = <0>;
+		qcom,mdss-dsi-h-right-border = <0>;
+		qcom,mdss-dsi-v-top-border = <0>;
+		qcom,mdss-dsi-v-bottom-border = <0>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-color-order = "rgb_swap_rgb";
+		qcom,mdss-dsi-underflow-color = <0>;
+		qcom,mdss-dsi-border-color = <0>;
+		qcom,mdss-dsi-on-command = [
+			/* update: 2015.09.11 */
+			39 01 00 00 00 00 04 B9 FF 83 94 /* Set EXTC */
+			39 01 00 00 00 00 07 BA 62 03 68 6B B2 C0 /* Set MIPI 3 lane */
+			39 01 00 00 00 00 0B B1 48 12 72 09 31 54 71 31 50 34 /* Set Power */
+			39 01 00 00 00 00 07 B2 00 80 64 06 08 2F /* Set Display */
+			39 01 00 00 00 00 1F B4 74 76 0D 5C 5A 5B 01 05 7E 35 00 3F 74 76 0D 5C 5A 5B 01 05 7E 3F 00 FF 81 81 81 81 08 01 /* Set CYC */
+			39 01 00 00 00 00 22 D3 00 00 0F 0F 40 07 0A 0A 32 10 01 00 01 52 15 07 05 07 32 10 00 00 00 67 44 05 05 37 0E 0E 27 06 40 /* Set D3 */
+			39 01 00 00 00 00 2D D5 20 21 00 01 02 03 04 05 06 07 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 19 19 18 18 24 25 /* Set GIP */
+			39 01 00 00 00 00 2D D6 24 25 07 06 05 04 03 02 01 00 18 18 18 18 18 18 18 18 58 58 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 19 19 20 21 /* Set D6 */
+			39 01 00 00 00 00 3B E0 00 05 10 17 19 1D 21 20 43 55 69 6B 78 8C 96 9C AB AF AB BA C8 63 61 66 6C 6F 74 7F 7F 00 05 0F 16 19 1D 21 20 43 55 69 6B 78 8C 96 9C AB AF AB BA C8 63 61 66 6C 6F 74 7F 7F /* Set Gamma */
+			39 01 00 00 00 00 03 C0 1F 31 /* Set C0 */
+			39 01 00 00 00 00 02 CC 0B /* Set Panel */
+			39 01 00 00 00 00 02 D4 02 /* Set D4 */
+			39 01 00 00 00 00 02 BD 01 /* Set BD */
+			39 01 00 00 00 00 02 B1 60 /* Set B1 */
+			39 01 00 00 00 00 02 BD 00 /* Set BD */
+			39 01 00 00 00 00 02 51 FF /* Set Backlight */
+			39 01 00 00 00 00 02 53 24 /* Dimming */
+			39 01 00 00 00 00 08 C9 13 00 14 1E B1 1E 00 /* Set CABC control: PWM=20kHz */
+			15 01 00 00 05 00 02 55 01 /* Set CABC mode: user interface image */
+			15 01 00 00 00 00 02 5E 11 /* Set CABC minimum brightness */
+			39 01 00 00 00 00 0A CA 2D 26 25 22 21 21 20 20 20 /* SET CABC GAIN: still mode (50~100%) */
+			39 01 00 00 0A 00 03 E4 00 D3 /* SET CE MODE */
+			39 01 00 00 00 00 2C E5 00 08 0E 0A 09 00 20 20 20 10 00 00 00 00 00 00 80 0A 20 08 09 0A 0E 0B 0B 0A 0A 09 08 05 03 00 00 00 00 00 00 00 00 00 00 00 00 /* SET CE */
+			39 01 00 00 05 00 12 E6 00 00 00 05 05 1C 18 1C 20 20 20 16 12 16 1C 20 20 /* SET CE SEL */
+			15 01 00 00 78 00 02 11 00 /* Sleep Out */
+			05 01 00 00 0A 00 02 29 00 /* Display On */
+		];
+		qcom,mdss-dsi-off-command = [
+			05 01 00 00 0A 00 02 28 00 /* Display Off */
+			05 01 00 00 28 00 02 10 00 /* Sleep In */
+		];
+		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
+		qcom,mdss-dsi-off-command-state = "dsi_hs_mode";
+		qcom,mdss-dsi-h-sync-pulse = <0>;
+		qcom,mdss-dsi-traffic-mode = "non_burst_sync_event";
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-lane-map = "lane_map_0123";
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		/* the same timing setting as Tianma panel */
+		qcom,mdss-dsi-panel-timings = [38 2F 25 00 43 3D 2A 31 3C 03 04 00];
+		qcom,mdss-dsi-t-clk-post = <0x1F>;
+		qcom,mdss-dsi-t-clk-pre = <0x39>;
+		qcom,mdss-dsi-bl-min-level = <30>;
+		qcom,mdss-dsi-bl-max-level = <255>;
+		qcom,mdss-dsi-dma-trigger = "trigger_sw";
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_i2c";
+		qcom,mdss-dsi-default-command-state = "dsi_hs_mode";
+		htc,cabc-off-cmds = [15 01 00 00 05 00 02 55 00];
+		htc,cabc-ui-cmds = [
+			15 01 00 00 05 00 02 55 01
+			39 01 00 00 00 00 08 C9 13 00 14 1E B1 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 2D 26 25 22 21 21 20 20 20
+		];
+		htc,cabc-video-cmds = [
+			15 01 00 00 05 00 02 55 03
+			39 01 00 00 00 00 08 C9 13 00 14 1E B1 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 40 2E 2A 23 22 21 20 20 20
+		];
+		htc,dimming-on-cmds = [15 01 00 00 00 00 02 53 2C];
+		qcom,mdss-pan-physical-width-dimension = <62>;
+		qcom,mdss-pan-physical-height-dimension = <110>;
+		qcom,mdss-shrink-pwm = <8 97 255>;
+		qcom,mdss-dsi-lp11-init;
+		htc,mdss-camera-blk = <200>;
+		htc,panel-id = <2>;
+	};
+
+	a16_mr_truly_hx8394d_720p_vid:qcom,mdss_dsi_a16_mr_truly_hx8394d_720p_video {
+		compatible = "qcom,mdss-dsi-panel";
+		status = "disable";
+		qcom,cont-splash-enabled;
+		qcom,mdss-dsi-panel-name = "a16 mr truly hx8394d 720p video mode dsi panel";
+		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+		qcom,mdss-dsi-panel-destination = "display_1";
+		qcom,mdss-dsi-panel-framerate = <53>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <720>;
+		qcom,mdss-dsi-panel-height = <1280>;
+		/* the same porch setting as Tianma panel */
+		qcom,mdss-dsi-h-front-porch = <100>;
+		qcom,mdss-dsi-h-back-porch = <78>;
+		qcom,mdss-dsi-h-pulse-width = <96>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <16>;
+		qcom,mdss-dsi-v-front-porch = <9>;
+		qcom,mdss-dsi-v-pulse-width = <2>;
+		qcom,mdss-dsi-h-left-border = <0>;
+		qcom,mdss-dsi-h-right-border = <0>;
+		qcom,mdss-dsi-v-top-border = <0>;
+		qcom,mdss-dsi-v-bottom-border = <0>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-color-order = "rgb_swap_rgb";
+		qcom,mdss-dsi-underflow-color = <0>;
+		qcom,mdss-dsi-border-color = <0>;
+		qcom,mdss-dsi-on-command = [
+			39 01 00 00 00 00 04 B9 FF 83 94 /* Set EXTC */
+			39 01 00 00 00 00 03 BA 72 83 /* Set MIPI: 0x72=3Lane, 0x73=4lane */
+			39 01 00 00 00 00 10 B1 6C 55 15 11 04 11 F1 80 E8 95 23 80 C0 D2 58 /* Set Power: VGH=15, VGL=-10.2 */
+			39 01 00 00 00 00 0C B2 00 64 10 07 32 1C 08 08 1C 4D 00 /* Set Display: column inversion */
+			15 01 00 00 00 00 02 BC 07 /* set VDDD: 1.7V */
+			39 01 00 00 00 00 0D B4 00 FF 03 5C 03 5C 03 5C 01 70 01 70 /* Set CYC(panel driving timing): column inversion */
+			39 01 00 00 00 00 02 D2 55 /* Clamp Source Power */
+			39 01 00 00 00 00 1F D3 00 0F 00 01 1A 08 00 32 10 08 00 08 54 15 0F 05 04 02 12 10 05 07 23 22 0C 0C 27 10 07 07 /* Set GIP option 0: column inversion */
+			39 01 00 00 00 00 2D D5 19 19 18 18 1B 1B 1A 1A 04 05 06 07 00 01 02 03 20 21 18 18 22 23 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 /* Set GIP option 1 */
+			39 01 00 00 00 00 2D D6 18 18 19 19 1B 1B 1A 1A 03 02 01 00 07 06 05 04 23 22 18 18 21 20 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 /* Set GIP option 2 */
+			39 01 00 00 00 00 2B E0 00 03 09 23 27 3F 1C 3A 06 0A 0B 17 0D 10 12 11 13 07 11 14 18 00 03 09 23 29 3F 1C 3A 06 0A 0B 17 0E 11 12 11 13 07 12 13 18 /* Set Gamma */
+			39 01 00 00 00 00 03 C0 30 14 /* Set Source Option:Column inversion */
+			39 01 00 00 00 00 05 C7 00 C0 00 C0 /* Set TCON option: Column inversion */
+			15 01 00 00 00 00 02 CC 09 /* Set Panel */
+			39 01 00 00 00 00 02 DF 87
+			39 01 00 00 00 00 02 C6 BD /* Set ECO: add for improve ESD */
+			39 01 00 00 00 00 02 BD 02
+			39 01 00 00 00 00 0D D8 FF FF EF BE AA A0 FF FF EF BE AA A0
+			39 01 00 00 00 00 02 BD 00
+			15 01 00 00 00 00 02 51 FF /* Set display brightness */
+			15 01 00 00 00 00 02 53 24 /* Set CTRL display PWM out */
+			39 01 00 00 00 00 08 C9 1F 00 14 1E 81 1E 00 /* Set CABC control: PWM=20kHz */
+			15 01 00 00 05 00 02 55 01 /* Set CABC mode: user interface image */
+			15 01 00 00 00 00 02 5E 00 /* Set CABC minimum brightness */
+			39 01 00 00 00 00 0A CA 40 30 2F 2E 2D 26 23 21 20 /* SET CABC GAIN: still mode (50~100%) */
+			39 01 00 00 00 00 23 CE 00 00 00 10 10 10 10 20 20 20 20 20 20 20 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 00 /* SET CABC LUT: still mode (50~100%) */
+			39 01 00 00 0A 00 03 E4 D3 00 /* SET CE MODE */
+			39 01 00 00 00 00 2C E5 00 08 0E 0A 09 00 20 20 20 10 00 00 00 00 00 00 80 0A 20 08 09 0A 0E 0B 0B 0A 0A 09 08 05 03 00 00 00 00 00 00 00 00 00 00 00 00 /* SET CE */
+			39 01 00 00 05 00 12 E6 00 00 00 05 05 1C 18 1C 20 20 20 16 12 16 1C 20 20 /* SET CE SEL */
+			15 01 00 00 78 00 02 11 00 /* Sleep Out */
+			05 01 00 00 0A 00 02 29 00 /* Display On */
+		];
+		qcom,mdss-dsi-off-command = [
+			05 01 00 00 0A 00 02 28 00 /* Display Off */
+			05 01 00 00 28 00 02 10 00 /* Sleep In */
+		];
+		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
+		qcom,mdss-dsi-off-command-state = "dsi_hs_mode";
+		qcom,mdss-dsi-h-sync-pulse = <0>;
+		qcom,mdss-dsi-traffic-mode = "non_burst_sync_event";
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-lane-map = "lane_map_0123";
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		/* the same timing setting as Tianma panel */
+		qcom,mdss-dsi-panel-timings = [38 2F 25 00 43 3D 2A 31 3C 03 04 00];
+		qcom,mdss-dsi-t-clk-post = <0x1F>;
+		qcom,mdss-dsi-t-clk-pre = <0x39>;
+		qcom,mdss-dsi-bl-min-level = <30>;
+		qcom,mdss-dsi-bl-max-level = <255>;
+		qcom,mdss-dsi-dma-trigger = "trigger_sw";
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_i2c";
+		qcom,mdss-dsi-default-command-state = "dsi_hs_mode";
+		htc,cabc-off-cmds = [15 01 00 00 05 00 02 55 00];
+		htc,cabc-ui-cmds = [
+			15 01 00 00 05 00 02 55 01
+			15 01 00 00 05 00 02 5E 00
+			39 01 00 00 00 00 0A CA 40 30 2F 2E 2D 26 23 21 20
+			39 01 00 00 00 00 23 CE 00 00 00 10 10 10 10 20 20 20 20 20 20 20 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 00
+		];
+		htc,cabc-video-cmds = [
+			15 01 00 00 05 00 02 55 01
+			15 01 00 00 05 00 02 5E 00
+			39 01 00 00 00 00 0A CA 40 2E 2A 23 22 21 20 20 20
+			39 01 00 00 00 00 23 CE 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+		];
+		htc,dimming-on-cmds = [15 01 00 00 00 00 02 53 2C];
+		qcom,mdss-pan-physical-width-dimension = <62>;
+		qcom,mdss-pan-physical-height-dimension = <110>;
+		qcom,mdss-shrink-pwm = <8 97 255>;
+		qcom,mdss-dsi-lp11-init;
+		htc,mdss-camera-blk = <200>;
+		htc,panel-id = <3>;
+	};
+
+	a16_truly_hx8394d_720p_vid:qcom,mdss_dsi_a16_truly_hx8394d_720p_video {
+		compatible = "qcom,mdss-dsi-panel";
+		status = "disable";
+		qcom,cont-splash-enabled;
+		qcom,mdss-dsi-panel-name = "a16 truly hx8394d 720p video mode dsi panel";
+		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+		qcom,mdss-dsi-panel-destination = "display_1";
+		qcom,mdss-dsi-panel-framerate = <53>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <720>;
+		qcom,mdss-dsi-panel-height = <1280>;
+		/* the same porch setting as Tianma panel */
+		qcom,mdss-dsi-h-front-porch = <100>;
+		qcom,mdss-dsi-h-back-porch = <78>;
+		qcom,mdss-dsi-h-pulse-width = <93>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <14>;
+		qcom,mdss-dsi-v-front-porch = <15>;
+		qcom,mdss-dsi-v-pulse-width = <2>;
+		qcom,mdss-dsi-h-left-border = <0>;
+		qcom,mdss-dsi-h-right-border = <0>;
+		qcom,mdss-dsi-v-top-border = <0>;
+		qcom,mdss-dsi-v-bottom-border = <0>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-color-order = "rgb_swap_rgb";
+		qcom,mdss-dsi-underflow-color = <0>;
+		qcom,mdss-dsi-border-color = <0>;
+		qcom,mdss-dsi-on-command = [
+			39 01 00 00 00 00 04 B9 FF 83 94 /* Set EXTC */
+			39 01 00 00 00 00 03 BA 72 83 /* Set MIPI 0x72 3-Lane, 0x73 4-lane */
+			39 01 00 00 00 00 10 B1 6C 12 12 24 04 11 F1 80 EA 96 23 80 C0 D2 58 /* Set Power External Power mode VGH=15.4,VGL=-10.4 */
+			39 01 00 00 00 00 0C B2 00 64 10 07 32 1C 08 08 1C 4D 00 /* Set Display  */
+			39 01 00 00 00 00 04 BF 41 0E 01 /* Set Power Option */
+			39 01 00 00 00 00 0D B4 00 FF 50 51 50 51 50 51 02 6A 02 6A /* Set CYC */
+			39 01 00 00 00 00 1F D3 00 06 00 40 07 00 00 32 10 08 00 08 52 15 0F 05 0F 32 10 00 00 00 47 44 0C 0C 47 0C 0C 47 /* Set D3 */
+			39 01 00 00 00 00 2D D5 20 21 00 01 02 03 04 05 06 07 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 19 19 18 18 24 25 /* Set GIP */
+			39 01 00 00 00 00 2D D6 24 25 07 06 05 04 03 02 01 00 18 18 18 18 18 18 18 18 58 58 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 19 19 20 21 /* Set D6 */
+			39 01 00 00 00 00 2B E0 00 0A 10 39 3E 3F 1F 44 06 0A 0C 18 0D 10 13 12 14 07 12 13 17 00 0A 0F 38 3E 3F 20 46 07 0A 0C 17 10 13 16 14 14 08 12 13 18 /* Set Gamma */
+			39 01 00 00 00 00 02 CC 09 /* Set Panel */
+			39 01 00 00 00 00 03 C0 30 14 /* Set C0 */
+			39 01 00 00 00 00 05 C7 00 C0 40 C0 /* Set TCON Option */
+			15 01 00 00 05 00 02 55 01
+			39 01 00 00 00 00 08 C9 1F 00 14 1E 81 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 2D 26 25 22 21 21 20 20 20
+			39 01 00 00 0A 00 03 E4 D3 00 /* SET CE MODE */
+			39 01 00 00 00 00 2C E5 00 08 0E 0A 09 00 20 20 20 10 00 00 00 00 00 00 80 0A 20 08 09 0A 0E 0B 0B 0A 0A 09 08 05 03 00 00 00 00 00 00 00 00 00 00 00 00 /* SET CE */
+			39 01 00 00 05 00 12 E6 00 00 00 05 05 1C 18 1C 20 20 20 16 12 16 1C 20 20 /* SET CE SEL */
+			15 01 00 00 00 00 02 51 FF /* Set display brightness */
+			15 01 00 00 00 00 02 53 24 /* Set CTRL display PWM out */
+			15 01 00 00 78 00 02 11 00 /* Sleep Out */
+			05 01 00 00 0A 00 02 29 00 /* Display On */
+		];
+		qcom,mdss-dsi-off-command = [
+			05 01 00 00 0A 00 02 28 00 /* Display Off */
+			05 01 00 00 28 00 02 10 00 /* Sleep In */
+		];
+		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
+		qcom,mdss-dsi-off-command-state = "dsi_hs_mode";
+		qcom,mdss-dsi-h-sync-pulse = <0>;
+		qcom,mdss-dsi-traffic-mode = "non_burst_sync_event";
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-lane-map = "lane_map_0123";
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		/* the same timing setting as Tianma panel */
+		qcom,mdss-dsi-panel-timings = [38 2F 25 00 43 3D 2A 31 3C 03 04 00];
+		qcom,mdss-dsi-t-clk-post = <0x1F>;
+		qcom,mdss-dsi-t-clk-pre = <0x39>;
+		qcom,mdss-dsi-bl-min-level = <30>;
+		qcom,mdss-dsi-bl-max-level = <255>;
+		qcom,mdss-dsi-dma-trigger = "trigger_sw";
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_i2c";
+		qcom,mdss-dsi-default-command-state = "dsi_hs_mode";
+		htc,cabc-off-cmds = [15 01 00 00 05 00 02 55 00];
+		htc,cabc-ui-cmds = [
+			15 01 00 00 05 00 02 55 01
+			39 01 00 00 00 00 08 C9 1F 00 14 1E 81 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 2D 26 25 22 21 21 20 20 20
+		];
+		htc,cabc-video-cmds = [
+			15 01 00 00 05 00 02 55 03
+			39 01 00 00 00 00 08 C9 1F 00 14 1E 81 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 40 2E 2A 23 22 21 20 20 20
+		];
+		htc,dimming-on-cmds = [15 01 00 00 00 00 02 53 2C];
+		qcom,mdss-pan-physical-width-dimension = <62>;
+		qcom,mdss-pan-physical-height-dimension = <110>;
+		qcom,mdss-shrink-pwm = <8 97 255>;
+		qcom,mdss-dsi-lp11-init;
+		htc,mdss-camera-blk = <200>;
+		htc,panel-id = <4>;
+	};
+
+	a16_success_hx8394d_720p_vid:qcom,mdss_dsi_a16_success_hx8394d_720p_video {
+		compatible = "qcom,mdss-dsi-panel";
+		status = "disable";
+		qcom,cont-splash-enabled;
+		qcom,mdss-dsi-panel-name = "a16 success hx8394d 720p video mode dsi panel";
+		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+		qcom,mdss-dsi-panel-destination = "display_1";
+		qcom,mdss-dsi-panel-framerate = <53>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <720>;
+		qcom,mdss-dsi-panel-height = <1280>;
+		/* the same porch setting as Tianma panel */
+		qcom,mdss-dsi-h-front-porch = <100>;
+		qcom,mdss-dsi-h-back-porch = <78>;
+		qcom,mdss-dsi-h-pulse-width = <93>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <14>;
+		qcom,mdss-dsi-v-front-porch = <15>;
+		qcom,mdss-dsi-v-pulse-width = <2>;
+		qcom,mdss-dsi-h-left-border = <0>;
+		qcom,mdss-dsi-h-right-border = <0>;
+		qcom,mdss-dsi-v-top-border = <0>;
+		qcom,mdss-dsi-v-bottom-border = <0>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-color-order = "rgb_swap_rgb";
+		qcom,mdss-dsi-underflow-color = <0>;
+		qcom,mdss-dsi-border-color = <0>;
+		qcom,mdss-dsi-on-command = [
+			39 01 00 00 00 00 04 B9 FF 83 94 /* Set EXTC */
+			39 01 00 00 00 00 03 BA 32 83 /* Set MIPI 3 lane */
+			39 01 00 00 00 00 10 B1 6C 12 12 24 04 11 F1 80 E8 99 23 80 C0 D2 58 /* Set Power */
+			39 01 00 00 00 00 0C B2 00 64 10 07 22 1C 08 08 1C 4D 00 /* Set Display */
+			15 01 00 00 00 00 02 BC 07 /* Set BC */
+			39 01 00 00 00 00 04 BF 41 0E 01 /* Set BF */
+			39 01 00 00 00 00 0D B4 00 FF 50 51 50 51 50 51 02 6A 02 6A /* Set CYC */
+			39 01 00 00 00 00 1F D3 00 06 00 40 07 00 00 32 10 08 00 08 52 15 0F 05 0F 32 10 00 00 00 47 44 0C 0C 47 0C 0C 47 /* Set D3 */
+			39 01 00 00 00 00 2D D5 20 21 00 01 02 03 04 05 06 07 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 19 19 18 18 24 25 /* Set GIP */
+			39 01 00 00 00 00 2D D6 24 25 07 06 05 04 03 02 01 00 18 18 18 18 18 18 18 18 58 58 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 19 19 18 18 20 21 /* Set D6 */
+			39 01 00 00 00 00 2B E0 02 07 09 36 3C 3F 18 42 07 0A 0C 17 0F 12 14 12 13 07 14 19 1A 00 05 09 36 3C 3F 18 42 07 0A 0C 17 0F 12 14 12 13 07 14 19 1A /* Set Gamma */
+			39 01 00 00 00 00 02 BD 00
+			39 01 00 00 00 00 2C C1 01 00 07 13 19 20 25 2C 33 3A 41 47 4D 55 5C 63 6B 72 79 82 89 92 9A A2 AA B2 BA C0 C8 D2 DB E5 F0 FF 22 28 17 2C A3 25 D3 3E C0 /* Set RED GAMMA */
+			39 01 00 00 00 00 02 BD 01
+			39 01 00 00 00 00 2B C1 00 07 13 19 20 25 2C 33 3A 41 47 4D 55 5C 63 6B 72 79 82 89 92 9A A2 AA B2 BA C0 C8 D2 DB E5 F0 FF 22 28 17 2C A3 25 D3 3E C0 /* Set GREEN GAMMA */
+			39 01 00 00 00 00 02 BD 02
+			39 01 00 00 00 00 2B C1 00 07 13 19 20 25 2C 33 3A 41 47 4D 55 5C 63 6B 72 79 82 89 92 9A A2 AA B2 BA C0 C8 D2 DB E5 F0 FF 22 28 17 2C A3 25 D3 3E C0 /* Set BLUE GAMMA */
+			39 01 00 00 00 00 03 B6 A2 A2
+			15 01 00 00 00 00 02 CC 01 /* Set Panel */
+			39 01 00 00 00 00 03 C0 30 14 /* Set C0 */
+			39 01 00 00 00 00 05 C7 00 C0 40 C0 /* Set C7 */
+			15 01 00 00 00 00 02 36 02 /* Select the Source driver scan direction */
+			15 01 00 00 00 00 02 53 24 /* Set Backlight */
+			15 01 00 00 00 00 02 51 FF /* Set display brightness */
+			15 01 00 00 05 00 02 55 01
+			39 01 00 00 00 00 08 C9 1F 00 14 1E 81 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 2D 26 25 22 21 21 20 20 20
+			39 01 00 00 0A 00 03 E4 D3 00 /* SET CE MODE */
+			39 01 00 00 00 00 2C E5 00 08 0E 0A 09 00 20 20 20 10 00 00 00 00 00 00 80 0A 20 08 09 0A 0E 0B 0B 0A 0A 09 08 05 03 00 00 00 00 00 00 00 00 00 00 00 00 /* SET CE */
+			39 01 00 00 05 00 12 E6 00 00 00 05 05 1C 18 1C 20 20 20 16 12 16 1C 20 20 /* SET CE SEL */
+			05 01 00 00 C8 00 02 11 00 /* Sleep Out */
+			05 01 00 00 14 00 02 29 00 /* Display On */
+		];
+		qcom,mdss-dsi-off-command = [
+			05 01 00 00 0A 00 02 28 00 /* Display Off */
+			05 01 00 00 28 00 02 10 00 /* Sleep In */
+		];
+		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
+		qcom,mdss-dsi-off-command-state = "dsi_hs_mode";
+		qcom,mdss-dsi-h-sync-pulse = <0>;
+		qcom,mdss-dsi-traffic-mode = "non_burst_sync_event";
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-lane-map = "lane_map_0123";
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		/* the same timing setting as Tianma panel */
+		qcom,mdss-dsi-panel-timings = [38 2F 25 00 43 3D 2A 31 3C 03 04 00];
+		qcom,mdss-dsi-t-clk-post = <0x1F>;
+		qcom,mdss-dsi-t-clk-pre = <0x39>;
+		qcom,mdss-dsi-bl-min-level = <30>;
+		qcom,mdss-dsi-bl-max-level = <255>;
+		qcom,mdss-dsi-dma-trigger = "trigger_sw";
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_i2c";
+		qcom,mdss-dsi-default-command-state = "dsi_hs_mode";
+		htc,cabc-off-cmds = [15 01 00 00 05 00 02 55 00];
+		htc,cabc-ui-cmds = [
+			15 01 00 00 05 00 02 55 01
+			39 01 00 00 00 00 08 C9 1F 00 14 1E 81 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 2D 26 25 22 21 21 20 20 20
+		];
+		htc,cabc-video-cmds = [
+			15 01 00 00 05 00 02 55 03
+			39 01 00 00 00 00 08 C9 1F 00 14 1E 81 1E 00
+			15 01 00 00 05 00 02 5E 11
+			39 01 00 00 00 00 0A CA 40 2E 2A 23 22 21 20 20 20
+		];
+		htc,dimming-on-cmds = [15 01 00 00 00 00 02 53 2C];
+		qcom,mdss-pan-physical-width-dimension = <62>;
+		qcom,mdss-pan-physical-height-dimension = <110>;
+		qcom,mdss-shrink-pwm = <8 97 255>;
+		qcom,mdss-dsi-lp11-init;
+		htc,mdss-camera-blk = <200>;
+		htc,panel-id = <5>;
+	};
+};

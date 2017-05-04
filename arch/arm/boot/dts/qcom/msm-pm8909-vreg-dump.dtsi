@@ -1,0 +1,147 @@
+&soc {
+	htc,pm8909-vreg {
+		compatible = "htc,vreg-dump";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		subtype_ctl_offset = <0x5>;
+		range_ctl_offset = <0x40>;
+		step_ctl_offset = <0x41>;
+		mode_ctl_offset = <0x45>;
+		en_ctl_offset = <0x46>;
+		pd_ctl_offset = <0x48>;
+		en_bit = <7>;
+		pd_bit = <7>;
+
+		vreg@0 {
+			reg = <0x0>;
+			vreg_name = "8909_s1";
+			base_addr = <0x11400>;
+			type = "ult-lo-smps";
+		};
+
+		vreg@1 {
+			reg = <0x1>;
+			vreg_name = "8909_s2";
+			base_addr = <0x11700>;
+			type = "ult-lo-smps";
+		};
+
+		vreg@2 {
+			reg = <0x2>;
+			vreg_name = "8909_l1";
+			base_addr = <0x14000>;
+			type = "ult-nldo";
+		};
+
+		vreg@3 {
+			reg = <0x3>;
+			vreg_name = "8909_l2";
+			base_addr = <0x14100>;
+			type = "ult-nldo";
+		};
+
+		vreg@4 {
+			reg = <0x4>;
+			vreg_name = "8909_l3";
+			base_addr = <0x14200>;
+			type = "ult-nldo";
+		};
+
+		vreg@5 {
+			reg = <0x5>;
+			vreg_name = "8909_l4";
+			base_addr = <0x14300>;
+			type = "ult-pldo";
+		};
+
+		vreg@6 {
+			reg = <0x6>;
+			vreg_name = "8909_l5";
+			base_addr = <0x14400>;
+			type = "ult-pldo";
+		};
+
+		vreg@7 {
+			reg = <0x7>;
+			vreg_name = "8909_l6";
+			base_addr = <0x14500>;
+			type = "ult-pldo";
+		};
+
+		vreg@8 {
+			reg = <0x8>;
+			vreg_name = "8909_l7";
+			base_addr = <0x14600>;
+			type = "ult-pldo";
+		};
+
+		vreg@9 {
+			reg = <0x9>;
+			vreg_name = "8909_l8";
+			base_addr = <0x14700>;
+			type = "ult-pldo";
+		};
+
+		vreg@a {
+			reg = <0xa>;
+			vreg_name = "8909_l9";
+			base_addr = <0x14800>;
+			type = "ult-pldo";
+		};
+
+		vreg@b {
+			reg = <0xb>;
+			vreg_name = "8909_l10";
+			base_addr = <0x14900>;
+			type = "ult-nldo";
+		};
+
+		vreg@c {
+			reg = <0xc>;
+			vreg_name = "8909_l11";
+			base_addr = <0x14a00>;
+			type = "ult-pldo";
+		};
+
+		vreg@d {
+			reg = <0xd>;
+			vreg_name = "8909_l12";
+			base_addr = <0x14b00>;
+			type = "ult-pldo";
+		};
+		vreg@e {
+			reg = <0xe>;
+			vreg_name = "8909_l13";
+			base_addr = <0x14c00>;
+			type = "ult-pldo";
+		};
+
+		vreg@f {
+			reg = <0xf>;
+			vreg_name = "8909_l14";
+			base_addr = <0x14d00>;
+			type = "ult-pldo";
+		};
+
+		vreg@10 {
+			reg = <0x10>;
+			vreg_name = "8909_l15";
+			base_addr = <0x14e00>;
+			type = "ult-pldo";
+		};
+
+		vreg@11 {
+			reg = <0x11>;
+			vreg_name = "8909_l17";
+			base_addr = <0x15000>;
+			type = "ult-pldo";
+		};
+
+		vreg@12 {
+			reg = <0x12>;
+			vreg_name = "8909_l18";
+			base_addr = <0x15100>;
+			type = "ult-pldo";
+		};
+	};
+};

@@ -1,0 +1,5 @@
+#
+# IIO common modules
+#
+
+source "drivers/i2c/sensors/common/st_sensors/Kconfig"
